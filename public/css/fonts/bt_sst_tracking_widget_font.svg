@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2023 by original authors @ fontello.com</metadata>
+<defs>
+<font id="bt_sst_tracking_widget_font" horiz-adv-x="1000" >
+<font-face font-family="bt_sst_tracking_widget_font" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="ok-circled2" unicode="&#xe800;" d="M0 350q0 207 147 354t353 146 354-146 146-354-146-354-354-146-353 146-147 354z m109 0q0-162 115-276t276-115 276 115 115 276-115 276-276 115-276-115-115-276z m106-51l94 92 93-94 289 291 94-93-291-289-92-94-93 94z" horiz-adv-x="1000" />
+
+<glyph glyph-name="torso" unicode="&#xe801;" d="M0-150l0 358 338 144q-61 37-92 101t-31 133q0 104 64 184t162 80q102-4 164-83t63-181q-2-74-33-136t-86-98l334-144 0-358-883 0z" horiz-adv-x="883" />
+</font>
+</defs>
+</svg>

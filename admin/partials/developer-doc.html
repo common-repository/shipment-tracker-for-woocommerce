@@ -1,0 +1,291 @@
+<div class="content"></div>
+<h2><span style="font-family:Courier New,Courier,monospace">Developer Features:</span></h2>
+
+<p><span style="font-family:Courier New,Courier,monospace"><strong>Shipment Tracker for Woocommerce</strong> provides few options for developers to consume shipment data directly into the custom php code through actions, public functions and shortcode.</span></p>
+
+<p><span style="font-family:Courier New,Courier,monospace">Here is the list of developer features currently supported by plugin:</span></p>
+
+<ul>
+	<li><span style="font-family:Courier New,Courier,monospace"><strong><u>Shortcode:</u></strong></span>
+
+	<ol>
+		<li><span style="font-family:Courier New,Courier,monospace">[bt_shipping_tracking_form_2]</span></li>
+		<li><span style="font-family:Courier New,Courier,monospace">[bt_estimated_delivery_widget]</span></li>
+	</ol>
+	</li>
+	<li><span style="font-family:Courier New,Courier,monospace"><strong><u>Action Hook:</u></strong></span>
+	<ol>
+		<li><span style="font-family:Courier New,Courier,monospace">add_action( &#39;bt_shipment_status_changed&#39;,...);</span></li>
+	</ol>
+	</li>
+	<li><span style="font-family:Courier New,Courier,monospace"><strong><u>Public Functions:</u></strong></span>
+	<ol>
+		<li><span style="font-family:Courier New,Courier,monospace">bt_get_shipping_tracking($order_id);</span></li>
+		<li><span style="font-family:Courier New,Courier,monospace">bt_force_sync_order_tracking($order_id);</span></li>
+		<li><span style="font-family:Courier New,Courier,monospace">bt_update_shipment_tracking($order_id,$courier_name,$awb_number,$shipping_status,$edd,$tracking_link);</span></li>
+	</ol>
+	</li>
+	<li><span style="font-family:Courier New,Courier,monospace"><strong><u>Filters:</u></strong></span>
+		<ol>
+			<li><span style="font-family:Courier New,Courier,monospace">bt_sst_product_page_delivery_checker_label_text</span></li>
+			<li><span style="font-family:Courier New,Courier,monospace">bt_sync_shimpent_track_pincode_checker_shipping_to_text</span></li>
+		</ol>
+	</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<p><span style="font-family:Courier New,Courier,monospace">Here are the description of each of them:</span></p>
+
+	<h2><span style="font-family:Courier New,Courier,monospace"><strong>Shortcode:</strong></span></h2>
+	<div class="feature">
+		<h2><span style="font-family:Courier New,Courier,monospace">1. [bt_shipping_tracking_form_2]</span></h2>
+		<div class="feature_item">
+			<p><span style="font-family:Courier New,Courier,monospace">Create your own public facing order tracking page using this shortcode.</span></p>
+
+			<p><span style="font-family:Courier New,Courier,monospace">Just copy following code where you want to display the order tracking form:</span></p>
+
+			<pre>
+			<code class="language-xhtml">[bt_shipping_tracking_form_2]</code></pre>
+
+			<p><span style="font-family:Courier New,Courier,monospace">You can customize the look and feel of the form and results table by applying custom css. Just use wordpress customizers or your child theme to add custom css like this:</span></p>
+
+				<pre>
+					<code class="language-css">&lt;style&gt;
+						#_bt_shipping_tracking_from{
+
+						}
+						#_bt_shipping_tracking_from input {
+
+						}
+						#_bt_shipping_tracking_from input[type="submit"]{
+
+						}
+						#_bt_shipping_tracking_response {
+
+						}
+						#_bt_shipping_tracking_response thead th {
+
+						}
+						#_bt_shipping_tracking_response td {
+
+						}
+						#_bt_shipping_tracking_public .table-responsive {
+
+						}
+						&lt;/style&gt;
+					</code>
+				</pre>
+
+			<p>&nbsp;</p>
+		</div>
+	</div>
+
+	<h2><span style="font-family:Courier New,Courier,monospace"><strong>Action Hook:</strong></span></h2>
+	<div class="feature">
+		<h2><span style="font-family:Courier New,Courier,monospace">1. add_action( &#39;bt_shipment_status_changed&#39;,...);</span></h2>
+		<div class="feature_item">
+		<p><span style="font-family:Courier New,Courier,monospace">Fires whenever shipment status is updated for any order. </span></p>
+
+		<h2><span style="font-family:Courier New,Courier,monospace">Parameters:</span></h2>
+
+		<h3><span style="font-family:Courier New,Courier,monospace"><strong>$order_id</strong></span></h3>
+
+		<p style="margin-left:80px"><span style="font-family:Courier New,Courier,monospace">(number) The ID of the order whose shipment tracking details have been updated.</span></p>
+
+		<h3><span style="font-family:Courier New,Courier,monospace"><strong>$shipment_obj</strong></span></h3>
+
+		<p style="margin-left:80px"><span style="font-family:Courier New,Courier,monospace">(Bt_Sync_Shipment_Tracking_Shipment_Model) Object containing shipment tracking information of the order.</span></p>
+
+		<h3><span style="font-family:Courier New,Courier,monospace"><strong>$shipment_obj_old</strong></span></h3>
+
+		<p style="margin-left:80px"><span style="font-family:Courier New,Courier,monospace">(Bt_Sync_Shipment_Tracking_Shipment_Model) Object containing previous shipment tracking information of the order.</span></p>
+
+		<p><span style="font-family:Courier New,Courier,monospace">Example:</span></p>
+
+		<pre>
+		<code class="language-php">&lt;?php
+
+		function bt_shipment_status_changed_callback( $order_id,$shipment_obj,$shipment_obj_old) {
+			//latest shipment tracking:
+			$courier_name = $shipment_obj-&gt;courier_name;
+			$current_status = $shipment_obj-&gt;current_status;
+			$awb = $shipment_obj-&gt;awb;
+			$tracking_url = $shipment_obj-&gt;tracking_url;
+
+			//previous shipment tracking:
+			$old_courier_name = $shipment_obj_old-&gt;courier_name;
+			$old_current_status = $shipment_obj_old-&gt;current_status;
+			$old_awb = $shipment_obj_old-&gt;awb;
+			$old_tracking_url = $shipment_obj_old-&gt;tracking_url;
+
+			// do stuff
+
+		}
+		add_action( 'bt_shipment_status_changed', 'bt_shipment_status_changed_callback', 10, 3 );</code></pre>
+
+		<p>&nbsp;</p>
+		</div>
+	</div>
+
+	<h2><span style="font-family:Courier New,Courier,monospace"><strong>Public Functions:</strong></span></h2>
+	<div class="feature">
+		<h2><span style="font-family:Courier New,Courier,monospace">1. bt_get_shipping_tracking($order_id);</span></h2>
+		<p><span style="font-family:Courier New,Courier,monospace">Returns associative array containing shipment tracking data of a specific order. </span></p>
+		<div class="feature_item">
+			
+
+			<h2><span style="font-family:Courier New,Courier,monospace">Parameters:</span></h2>
+
+			<h3><span style="font-family:Courier New,Courier,monospace"><strong>$order_id</strong></span></h3>
+
+			<p style="margin-left:80px"><span style="font-family:Courier New,Courier,monospace">(number) The ID of the order whose shipment tracking details have been updated.</span></p>
+
+			<h2><span style="font-family:Courier New,Courier,monospace">Returns:</span></h2>
+
+			<h3><span style="font-family:Courier New,Courier,monospace"><strong>Array</strong></span></h3>
+
+			<p style="margin-left:80px"><span style="font-family:Courier New,Courier,monospace">(Array) Associative array containing shipment tracking data.</span></p>
+
+			<p><span style="font-family:Courier New,Courier,monospace">Example:</span></p>
+
+			<pre>
+			<code class="language-php">&lt;?php
+
+			if(function_exists('bt_get_shipping_tracking')) {
+				$shipment_obj = bt_get_shipping_tracking($order_id);
+				if($shipment_obj != null){
+					$courier_name = $shipment_obj["courier_name"];
+					$current_status = $shipment_obj["current_status"];
+					$awb = $shipment_obj["awb"];
+					$tracking_url = $shipment_obj["tracking_url"];
+				}            
+			}</code></pre>
+
+			<p>&nbsp;</p>
+		</div>
+		<h2><span style="font-family:Courier New,Courier,monospace">2. bt_force_sync_order_tracking($order_id);</span></h2>
+		<div class="feature_item">
+			<p><span style="font-family:Courier New,Courier,monospace">Fetches shipment tracking information from the respective shipment provider that is associated with the specific order.</span></p>
+
+			<h2><span style="font-family:Courier New,Courier,monospace">Parameters:</span></h2>
+
+			<h3><span style="font-family:Courier New,Courier,monospace"><strong>$order_id</strong></span></h3>
+
+			<p style="margin-left:80px"><span style="font-family:Courier New,Courier,monospace">(number) The ID of the order whose shipment tracking details have been updated.</span></p>
+
+			<h2><span style="font-family:Courier New,Courier,monospace">Returns:</span></h2>
+
+			<h3><span style="font-family:Courier New,Courier,monospace"><strong>Array</strong></span></h3>
+
+			<p style="margin-left:80px"><span style="font-family:Courier New,Courier,monospace">(Array) Associative array containing shipment tracking data.</span></p>
+
+			<p><span style="font-family:Courier New,Courier,monospace">Example:</span></p>
+
+			<pre>
+			<code class="language-php">&lt;?php
+
+			if(function_exists('bt_force_sync_order_tracking')) {
+				$shipment_obj = bt_force_sync_order_tracking($order_id);
+				if($shipment_obj != null){
+					$courier_name = $shipment_obj["courier_name"];
+					$current_status = $shipment_obj["current_status"];
+					$awb = $shipment_obj["awb"];
+					$tracking_url = $shipment_obj["tracking_url"];
+				}            
+			}</code></pre>
+
+			<p>&nbsp;</p>
+		</div>
+		<h2><span style="font-family:Courier New,Courier,monospace">3. bt_update_shipment_tracking($order_id,$courier_name,$awb_number,$shipping_status,$edd,$tracking_link);</span></h2>
+		<div class="feature_item">
+			<p><span style="font-family:Courier New,Courier,monospace">Saves shipment tracking data of an order.</span></p>
+
+			<h2><span style="font-family:Courier New,Courier,monospace">Parameters:</span></h2>
+
+			<h3><span style="font-family:Courier New,Courier,monospace"><strong>$order_id</strong></span></h3>
+			<p style="margin-left:80px"><span style="font-family:Courier New,Courier,monospace">(number) The Order ID.</span></p>
+
+			<h3><span style="font-family:Courier New,Courier,monospace"><strong>$courier_name</strong></span></h3>
+			<p style="margin-left:80px"><span style="font-family:Courier New,Courier,monospace">(string) Courier Name.</span></p>
+
+			<h3><span style="font-family:Courier New,Courier,monospace"><strong>$awb_number</strong></span></h3>
+			<p style="margin-left:80px"><span style="font-family:Courier New,Courier,monospace">(string) AWB Number.</span></p>
+
+			<h3><span style="font-family:Courier New,Courier,monospace"><strong>$shipping_status</strong></span></h3>
+			<p style="margin-left:80px">
+				<span style="font-family:Courier New,Courier,monospace">(string) Shipping Status.</span><br>
+				Possible Values: pending-pickup, out-for-pickup, in-transit, out-for-delivery, delivered, canceled, rto-in-transit, rto-delivered<br>
+				Note: Assigning a value other than above will also work.
+			</p>
+
+			<h3><span style="font-family:Courier New,Courier,monospace"><strong>$edd</strong></span></h3>
+			<p style="margin-left:80px">
+				<span style="font-family:Courier New,Courier,monospace">(string) Estimated Delivery Date (eg. 2022-03-15).</span>
+			</p>
+
+			<h3><span style="font-family:Courier New,Courier,monospace"><strong>$tracking_link</strong></span></h3>
+			<p style="margin-left:80px">
+				<span style="font-family:Courier New,Courier,monospace">(string) The Tracking url. Set to empty string to use global tracking url defined in plugin settings.</span>
+			</p>
+
+			<h2><span style="font-family:Courier New,Courier,monospace">Returns:</span></h2>
+
+			<h3><span style="font-family:Courier New,Courier,monospace"><strong>Array</strong></span></h3>
+
+			<p style="margin-left:80px"><span style="font-family:Courier New,Courier,monospace">(Array) Associative array containing shipment tracking data.</span></p>
+
+			<p><span style="font-family:Courier New,Courier,monospace">Example:</span></p>
+
+			<pre>
+			<code class="language-php">&lt;?php
+
+			if(function_exists('bt_update_shipment_tracking')) {
+				$shipment_obj = bt_update_shipment_tracking($order_id,$courier_name,$awb_number,$shipping_status,$edd,$tracking_link);
+			}</code></pre>
+
+			<p>&nbsp;</p>
+		</div>
+	</div>
+
+	<h2><span style="font-family:Courier New,Courier,monospace"><strong>Filters:</strong></span></h2>
+	<div class="feature">
+	
+		<div class="feature_item">
+			<pre>
+			<code class="language-php">&lt;?php
+
+				function bt_sst_product_page_delivery_checker_label_text($content) {
+					$content .= '<p>This is a message added by the shortcode filter.</p>';
+					return $content;
+				}
+				add_filter('bt_sst_product_page_delivery_checker_label_text', 'bt_sst_product_page_delivery_checker_label_text');
+				
+				function bt_sync_shimpent_track_pincode_checker_shipping_to_text($content) {
+					$content = '<span style="font-size:12px;">Select a delivery location to see product availability and delivery options</span>';
+					return $content;
+				}
+				add_filter('bt_sync_shimpent_track_pincode_checker_shipping_to_text', 'bt_sync_shimpent_track_pincode_checker_shipping_to_text');
+		
+		</code></pre>
+
+			<p>&nbsp;</p>
+		</div>
+		
+	</div>
+
+<p><span style="font-family:Courier New,Courier,monospace">Feature requests are welcome :-) </span></p>
+</div>
+<style>
+.feature{
+	margin:30px;
+	background-color:rgb(235, 235, 235);
+	padding:15px;
+}
+.feature_item{
+	margin:30px;
+	background-color:rgb(215, 215, 215);
+	padding:15px;
+}
+
+</style>

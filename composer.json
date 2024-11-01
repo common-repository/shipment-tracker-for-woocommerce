@@ -1,0 +1,6 @@
+{
+    "require": {
+        "htmlburger/carbon-fields": "^3.2",
+        "php-units-of-measure/php-units-of-measure": "^2.1"
+    }
+}
